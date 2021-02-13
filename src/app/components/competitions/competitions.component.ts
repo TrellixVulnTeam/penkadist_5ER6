@@ -17,45 +17,45 @@ interface HtmlInputEvent extends Event {
     styleUrls: ['./competitions.component.css']
 })
 export class CompetitionsComponent implements OnInit {
-
+    competitions$ = this.competitionService.competitions;
     file: File;
     flagSelected: string | ArrayBuffer;
     task: AngularFireUploadTask;
     downloadURL: Observable<string>;
-
     newCompetition = {} as Competition;
-    competitions = [];
 
     constructor(
         private storage: AngularFireStorage,
         private afs: AngularFirestore,
-        private competitionsService: CompetitionService,
+        private competitionService: CompetitionService,
         private router: Router) {
     }
 
-    ngOnInit() {
-        this.competitionsService.getCompetitions().subscribe(
-            res => this.competitions = res,
-            error => console.log(error));
+    ngOnInit(): void {
     }
 
-    add(flagUrl: HTMLInputElement) {
+    save(flagUrl: HTMLInputElement, competition: Competition): void {
         this.newCompetition.flagUrl = flagUrl.value;
-        this.competitionsService.addCompetition(this.newCompetition);
+        const id = competition.id || null;
+        this.competitionService.saveCompetition(this.newCompetition, id);
         this.newCompetition = {} as Competition;
         this.flagSelected = '';
         flagUrl.value = '';
     }
 
-    delete(event, competition: Competition) {
-        if (confirm('Desea borrar: "' + competition.name + '"')) {
-            this.competitionsService.deleteCompetition(competition.id);
-            return this.storage.storage.refFromURL(competition.flagUrl).delete();
+    async delete(competition: Competition): Promise<void> {
+        try {
+            if (confirm('Desea borrar: "' + competition.name + '"')) {
+                await this.competitionService.deleteCompetition(competition.id);
+                return this.storage.storage.refFromURL(competition.flagUrl).delete();
+            }
+        } catch (err) {
+            console.log(err);
         }
     }
 
-    edit(event, competition: Competition) {
-        this.router.navigate(['competition/edit/' + competition.id]).then();
+    goEdit(id): void {
+        this.router.navigate(['competition/edit/' + id]);
     }
 
     onFlagSelected(event: HtmlInputEvent): void {

@@ -1,0 +1,92 @@
+<div class="row">
+    <div class="col-lg-1">
+        <div class="toolbar-title">
+            <p>Filtros:</p>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="toolbar-content">
+            <div class="form-inline">
+                <label for="cb_competition">Competiciones &nbsp; </label>
+                <select class="form-control" name="" id="cb_competition" [(ngModel)]="term">
+                    <option *ngFor="let c of competitions$ | async" value="{{c.name}}">
+                        {{c.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="toolbar-content">
+            <input type="text" class="form-control" placeholder="Buscar por equipo, liga o competicion"
+                   [(ngModel)]="term">
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="card">
+            <h6 class="card-header">Partidos Sueltos - Terminados</h6>
+
+            <div class="card-body">
+                <ul class="list-matches">
+                    <li class="item-matches" *ngFor="let sm of matches$ | async | filter:term | filterStatus:'2'">
+                        <div class="form-inline">
+                            <p class="mr-2 mt-3">{{sm.competition}}</p>
+
+                            <!-- Home Team -->
+                            <img src="{{sm.homeTeamFlag}}" width="30" height="30" class="ml-4 mr-2">
+                            <p class="mr-2 mt-3">{{sm.homeTeamAlias}}</p>
+                            <!-- Score-->
+                            <select
+                                    name="{{sm.id}}"
+                                    class="form-control form-control-sm mr-2"
+                                    disabled
+                            >
+                                <option value="{{sm.homeTeamScore}}">{{sm.homeTeamScore}}</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                            </select>
+                            <!--///////-->
+                            <p class="mr-2 font-weight-bold mt-3"> Vs </p>
+
+                            <!-- Visit Team -->
+                            <!-- Score -->
+                            <select
+                                    name="{{sm.id}}"
+                                    class="form-control form-control-sm mr-2"
+                                    disabled
+                            >
+                                <option value="{{sm.visitTeamScore}}">{{sm.visitTeamScore}}</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                            </select>
+                            <p class="mr-2 mt-3">{{sm.visitTeamAlias}}</p>
+
+                            <img src="{{sm.visitTeamFlag}}" width="30" height="30" class="mr-2">
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

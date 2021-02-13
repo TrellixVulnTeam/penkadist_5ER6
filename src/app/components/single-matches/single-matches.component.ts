@@ -6,6 +6,7 @@ import {Gamble} from '../../interfaces/gamble';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {CompetitionService} from '../../services/competition/competition.service';
+import {MatchesService} from '../../services/matches.service';
 
 @Component({
     selector: 'app-single-matches',
@@ -15,9 +16,8 @@ import {CompetitionService} from '../../services/competition/competition.service
 export class SingleMatchesComponent implements OnInit, OnDestroy {
     datepicker = '';
     term: string;
-
-    singleMatches = [];
-    competitions = [];
+    matches$ = this.matchesService.matches;
+    competitions$ = this.competitionService.competitions;
 
     private unsubscribe$ = new Subject<void>();
 
@@ -25,21 +25,11 @@ export class SingleMatchesComponent implements OnInit, OnDestroy {
         private singleMatchesService: SingleMatchesService,
         private formatService: FormatService,
         private gambleService: GambleService,
-        private competitionService: CompetitionService) {
+        private competitionService: CompetitionService,
+        private matchesService: MatchesService) {
     }
 
     ngOnInit(): void {
-        this.singleMatchesService.getSingleMatches()
-            .subscribe(
-                res => {
-                    this.singleMatches = res;
-                }, error => console.log(error));
-
-        this.competitionService.getCompetitions()
-            .subscribe(
-                res => {
-                    this.competitions = res;
-                }, error => console.log(error));
     }
 
     ngOnDestroy(): void {

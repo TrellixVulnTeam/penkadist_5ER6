@@ -9,7 +9,7 @@
             <div class="form-inline">
                 <label for="cb_competition">Competiciones &nbsp; </label>
                 <select class="form-control" name="" id="cb_competition" [(ngModel)]="term">
-                    <option *ngFor="let c of competitions" value="{{c.name}}">
+                    <option *ngFor="let c of competitions$ | async" value="{{c.name}}">
                         {{c.name}}
                     </option>
                 </select>
@@ -32,7 +32,7 @@
 
             <div class="card-body">
                 <ul class="list-matches">
-                    <li class="item-matches" *ngFor="let sm of singleMatches | filter:term">
+                    <li class="item-matches" *ngFor="let sm of matches$ | async | filter:term | filterStatus:'1'">
                         <div class="form-inline">
                             <div class="input-group mr-2">
                                 <input

@@ -15,18 +15,18 @@ export class TypeTournamentComponent implements OnInit {
     constructor(private typeTournamentService: TypeTournamentService) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.typeTournamentService.getTypeTournaments().subscribe(
             res => this.typeTournaments = res,
             error => console.log(error)
         );
     }
 
-    add() {
+    add(): void {
 
         if (this.typeTournament.groups === true) {
             this.typeTournament.name = 'Fase de grupos + ' + this.typeTournament.phaseFinals;
-        }else{
+        } else {
             this.typeTournament.name = this.typeTournament.phaseFinals;
         }
 
@@ -34,7 +34,7 @@ export class TypeTournamentComponent implements OnInit {
         this.typeTournament = {} as TypeTournament;
     }
 
-    delete(event, typeTournament: TypeTournament) {
+    delete(event, typeTournament: TypeTournament): void {
         if (confirm('Esta seguro de eliminar el Tipo de Torneo: "' + typeTournament.name + '"')) {
             this.typeTournamentService.deleteTypeTournament(typeTournament.id);
         }

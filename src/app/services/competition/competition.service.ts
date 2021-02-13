@@ -8,12 +8,15 @@ import {Observable} from 'rxjs';
     providedIn: 'root'
 })
 export class CompetitionService {
-
-    competitionCollection: AngularFirestoreCollection<Competition>;
     competitions: Observable<Competition[]>;
+    competitionCollection: AngularFirestoreCollection<Competition>;
 
     constructor(private afs: AngularFirestore) {
         this.competitionCollection = afs.collection<Competition>('competitions', ref => ref.orderBy('name'));
+        this.getCompetitions();
+    }
+
+    getCompetitions(): void {
         this.competitions = this.competitionCollection.snapshotChanges().pipe(
             map(actions => actions.map(a => {
                 const data = a.payload.doc.data() as Competition;
@@ -23,20 +26,28 @@ export class CompetitionService {
         );
     }
 
-    getCompetitions() {
-        return this.competitions;
+    saveCompetition(competition: Competition, competitionId: string): Promise<void> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const id = competitionId || this.afs.createId();
+                const data = {id, ...competition};
+                const result = await this.competitionCollection.doc(id).set(data);
+                resolve(result);
+            } catch (err) {
+                reject(err.message);
+            }
+        });
     }
 
-    addCompetition(competition: Competition) {
-        this.competitionCollection.add(competition).catch(error => console.log(error));
-    }
 
-    deleteCompetition(id) {
-        this.competitionCollection.doc(id).delete().then();
+    deleteCompetition(competitionId: string): Promise<void> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const result = await this.competitionCollection.doc(competitionId).delete();
+                resolve(result);
+            } catch (err) {
+                reject(err.message);
+            }
+        });
     }
-
-    updateCompetition(id, competition: Competition) {
-        this.competitionCollection.doc(id).update(competition).then();
-    }
-
 }

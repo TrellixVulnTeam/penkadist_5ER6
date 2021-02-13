@@ -33,6 +33,7 @@ import {CompetitionsComponent} from './components/competitions/competitions.comp
 import {TemplatesComponent} from './components/templates/templates.component';
 import {NewTemplatesComponent} from './components/templates/new-templates/new-templates.component';
 import {HistoryTemplatesComponent} from './components/templates/history-templates/history-templates.component';
+import {SingleMatchesDoneComponent} from './components/single-matches/single-matches-done/single-matches-done.component';
 
 const routes: Routes = [
     /* Futbol */
@@ -54,6 +55,7 @@ const routes: Routes = [
 
     /* Single Matches */
     {path: 'singleMatches', component: SingleMatchesComponent, canActivate: [AuthGuard]},
+    {path: 'singleMatchesDone', component: SingleMatchesDoneComponent, canActivate: [AuthGuard]},
     {path: 'singleMatches/new', component: NewSingleMatchComponent, canActivate: [AuthGuard]},
 
     /* Templates */

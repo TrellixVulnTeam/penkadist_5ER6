@@ -15,7 +15,7 @@ import {CompetitionService} from '../../../services/competition/competition.serv
     styleUrls: ['./new-single-match.component.css']
 })
 export class NewSingleMatchComponent implements OnInit {
-
+    competitions$ = this.competitionService.competitions;
     matchDate: string;
     matchTime: string;
     matchDateLimit: string;
@@ -40,7 +40,7 @@ export class NewSingleMatchComponent implements OnInit {
         private leaguesService: LeaguesService,
         private clubService: ClubsService,
         private singleMatchesService: SingleMatchesService,
-        private competitionsService: CompetitionService,
+        private competitionService: CompetitionService,
         private router: Router) {
 
         const current = new Date();
@@ -65,9 +65,6 @@ export class NewSingleMatchComponent implements OnInit {
             res => this.leagues = res,
             error => console.log(error));
 
-        this.competitionsService.getCompetitions().subscribe(
-            res => this.competitions = res,
-            error => console.log(error));
     }
 
     typeTeam(event): void {

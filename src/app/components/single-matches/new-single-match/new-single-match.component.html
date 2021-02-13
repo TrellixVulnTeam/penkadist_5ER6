@@ -18,7 +18,7 @@
                                 class="form-control"
                                 [(ngModel)]="newSingleMatch.competition"
                             >
-                                <option *ngFor="let comp of competitions" value="{{comp.name}}">{{comp.name}}</option>
+                                <option *ngFor="let comp of competitions$ | async" value="{{comp.name}}">{{comp.name}}</option>
                             </select>
                         </div>
                     </div>
